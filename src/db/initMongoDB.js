@@ -6,7 +6,7 @@ import { env } from "../utils/env.js";
 export const initMongoDB = async () => {
     try {
         const user = env('MONGODB_USER');
-        const pwd = env('MONGODB_PASSWROD');
+        const pwd = env('MONGODB_PASSWORD');
         const url = env('MONGODB_URl');
         const db = env('MONGODB_DB');
 
