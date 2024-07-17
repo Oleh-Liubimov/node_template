@@ -1,10 +1,20 @@
 import createHttpError from "http-errors";
 import { createStudent, deleteStudent, getAllStudents, getStudentById, updateStudent } from "../services/students.js";
+import { parsePaginationParams } from '../utils/parcePaginationParams.js';
+import { parceSortParams } from "../utils/parceSortParams.js";
 
 
 export const getStudentsController = async (req, res, next) => {
     try {
-        const students = await getAllStudents();
+        const { page, perPage } = parsePaginationParams(req.query);
+        const { sortBy, sortOrder } = parceSortParams(req.query);
+
+        const students = await getAllStudents({
+            page,
+            perPage,
+            sortBy,
+            sortOrder
+        });
         res.json({
           status: 200,
           msg: 'Students found!',
