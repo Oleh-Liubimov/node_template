@@ -6,9 +6,15 @@ import {
   getStudentById,
   updateStudent,
 } from '../services/students.js';
+<<<<<<< Updated upstream
 import { parsePaginationParams } from '../utils/parcePaginationParams.js';
 import { parceSortParams } from '../utils/parceSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+=======
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parceSortParams } from '../utils/parseSortParams.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+>>>>>>> Stashed changes
 
 export const getStudentsController = async (req, res, next) => {
   try {
@@ -90,7 +96,16 @@ export const upsertStudentController = async (req, res, next) => {
 
 export const patchStudentController = async (req, res, next) => {
   const { studentId } = req.params;
-  const result = await updateStudent(studentId, req.body);
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+  const result = await updateStudent(studentId, {
+    ...req.body,
+    photo: photoUrl,
+  });
 
   if (!result) {
     next(createHttpError(404, 'Student not found'));
